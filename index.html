@@ -8,99 +8,113 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-:root{--red:#C8102E;--red-bright:#E8213E;--red-tint:rgba(200,16,46,0.08);--red-tint-mid:rgba(200,16,46,0.15);--text:#fff;--text-dim:rgba(255,255,255,0.65);--text-muted:rgba(255,255,255,0.35);--border:rgba(255,255,255,0.10);--border-mid:rgba(255,255,255,0.18);--surface:rgba(255,255,255,0.04);--surface-mid:rgba(255,255,255,0.08);--cn:#FF7F7F;--cd:#FFB347;--cs:#F5E642;--ce:#80DDB8;}
+:root{--red:#C8102E;--rb:#E8213E;--rt:rgba(200,16,46,.08);--rm:rgba(200,16,46,.15);--td:rgba(255,255,255,.65);--tm:rgba(255,255,255,.35);--br:rgba(255,255,255,.10);--sf:rgba(255,255,255,.04);--sm:rgba(255,255,255,.08);--cn:#FF7F7F;--cd:#FFB347;--cs:#F5E642;--ce:#80DDB8;}
 html{scroll-behavior:smooth;}
 body{font-family:'Lato',sans-serif;background:#111010;color:#fff;min-height:100vh;overflow-x:hidden;}
 .bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 80% 55% at 10% 0%,rgba(200,16,46,.25) 0%,transparent 65%),radial-gradient(ellipse 55% 45% at 92% 95%,rgba(200,16,46,.15) 0%,transparent 60%),linear-gradient(170deg,#1A0608 0%,#111010 40%,#0C0C0C 100%);}
-.bg::before{content:'';position:absolute;inset:0;background-image:radial-gradient(2px 2px at 7% 10%,rgba(255,255,255,.6) 0%,transparent 100%),radial-gradient(2px 2px at 38% 6%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(3px 3px at 94% 4%,rgba(255,255,255,.65) 0%,transparent 100%),radial-gradient(2px 2px at 73% 9%,rgba(255,255,255,.55) 0%,transparent 100%),radial-gradient(1px 1px at 20% 30%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(2px 2px at 28% 75%,rgba(255,255,255,.28) 0%,transparent 100%);}
+.bg::before{content:'';position:absolute;inset:0;background-image:radial-gradient(2px 2px at 7% 10%,rgba(255,255,255,.6) 0%,transparent 100%),radial-gradient(2px 2px at 38% 6%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(3px 3px at 94% 4%,rgba(255,255,255,.65) 0%,transparent 100%),radial-gradient(2px 2px at 73% 9%,rgba(255,255,255,.55) 0%,transparent 100%);}
 #app{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:2rem 1.5rem 5rem;}
-.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:2.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border);}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:2.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--br);}
 .lg{display:flex;align-items:center;gap:14px;}
 .li{height:40px;width:auto;}
 .ln{display:flex;flex-direction:column;line-height:1.25;}
 .lm{font-family:'Montserrat',sans-serif;font-size:18px;font-weight:800;color:#fff;}
 .lm em{color:rgba(255,140,140,1);font-style:normal;}
-.ls{font-size:10px;color:var(--text-muted);letter-spacing:.6px;text-transform:uppercase;margin-top:2px;}
-.bdg{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;padding:6px 14px;border-radius:20px;background:var(--red-tint-mid);border:1px solid rgba(200,16,46,.4);color:rgba(255,150,150,1);}
-.stps{display:flex;margin-bottom:2.5rem;background:var(--surface);border:1px solid var(--border);border-radius:50px;padding:5px;}
-.sp{flex:1;padding:9px 12px;border-radius:40px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;color:var(--text-muted);transition:all .3s;cursor:default;display:flex;align-items:center;justify-content:center;gap:7px;}
+.ls{font-size:10px;color:var(--tm);letter-spacing:.6px;text-transform:uppercase;margin-top:2px;}
+.bdg{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;padding:6px 14px;border-radius:20px;background:var(--rm);border:1px solid rgba(200,16,46,.4);color:rgba(255,150,150,1);}
+/* TOKEN SCREEN */
+.tscr{background:var(--sf);border:1px solid var(--br);border-radius:16px;padding:28px;margin-bottom:2rem;animation:fu .4s ease;}
+.ttit{font-family:'Montserrat',sans-serif;font-size:17px;font-weight:700;color:#fff;margin-bottom:.4rem;}
+.tsub{font-size:13px;color:var(--td);line-height:1.6;margin-bottom:1.25rem;}
+.tok-ok{display:none;align-items:center;gap:8px;font-size:12px;color:rgba(150,255,180,1);background:rgba(80,200,120,.1);border:1px solid rgba(80,200,120,.25);border-radius:8px;padding:8px 12px;margin-bottom:1rem;}
+.tok-ok.on{display:flex;}
+.tinp{width:100%;background:var(--sm);border:1px solid var(--br);border-radius:10px;color:#fff;font-family:'Lato',sans-serif;font-size:15px;padding:12px 16px;outline:none;margin-bottom:.75rem;transition:border-color .2s;letter-spacing:2px;text-transform:uppercase;}
+.tinp:focus{border-color:rgba(200,16,46,.65);}
+.tinp::placeholder{color:var(--tm);letter-spacing:0;text-transform:none;}
+.tbtn{width:100%;padding:13px;background:var(--red);color:#fff;border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;}
+.tbtn:hover{background:var(--rb);}
+.terr{font-size:12px;color:rgba(255,130,130,1);margin-top:.5rem;display:none;}
+/* STEPS */
+.stps{display:flex;margin-bottom:2.5rem;background:var(--sf);border:1px solid var(--br);border-radius:50px;padding:5px;}
+.sp{flex:1;padding:9px 12px;border-radius:40px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;color:var(--tm);transition:all .3s;cursor:default;display:flex;align-items:center;justify-content:center;gap:7px;}
 .sp.active{background:var(--red);color:#fff;}
 .sp.done{color:rgba(255,150,150,1);cursor:pointer;}
-.sp.done:hover{background:var(--red-tint-mid);}
-.sd{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.08);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.sp.active .sd{background:rgba(255,255,255,.2);}
-.sp.done .sd{background:rgba(255,100,100,.18);color:rgba(255,150,150,1);}
+.sp.done:hover{background:var(--rm);}
+.spd{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.08);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sp.active .spd{background:rgba(255,255,255,.2);}
+.sp.done .spd{background:rgba(255,100,100,.18);color:rgba(255,150,150,1);}
+/* PHASES */
 .ph{display:none;}
 .ph.on{display:block;animation:fu .4s ease;}
 @keyframes fu{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
 .pt{font-family:'Montserrat',sans-serif;font-size:25px;font-weight:800;color:#fff;margin-bottom:.4rem;line-height:1.2;}
 .pt .ac{color:rgba(255,130,130,1);}
-.ps{font-size:14px;color:var(--text-dim);margin-bottom:2rem;line-height:1.65;}
+.ps{font-size:14px;color:var(--td);margin-bottom:2rem;line-height:1.65;}
 .fg{margin-bottom:1.5rem;}
 .fl{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:rgba(255,150,150,1);margin-bottom:.6rem;display:block;}
-.fi,.ft,.fsel{width:100%;background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;color:#fff;font-family:'Lato',sans-serif;font-size:14px;padding:12px 16px;outline:none;transition:border-color .2s;resize:none;}
-.fi::placeholder,.ft::placeholder{color:var(--text-muted);}
-.fi:focus,.ft:focus,.fsel:focus{border-color:rgba(200,16,46,.65);background:var(--red-tint);}
+.fi,.ft,.fsel{width:100%;background:var(--sm);border:1px solid var(--br);border-radius:10px;color:#fff;font-family:'Lato',sans-serif;font-size:14px;padding:12px 16px;outline:none;transition:border-color .2s;resize:none;}
+.fi::placeholder,.ft::placeholder{color:var(--tm);}
+.fi:focus,.ft:focus,.fsel:focus{border-color:rgba(200,16,46,.65);background:var(--rt);}
 .fsel{appearance:none;cursor:pointer;}
 .fsel option{background:#1A0608;color:#fff;}
 .ft{min-height:110px;line-height:1.65;}
-.fh{font-size:11px;color:var(--text-muted);margin-top:.4rem;font-style:italic;}
+.fh{font-size:11px;color:var(--tm);margin-top:.4rem;font-style:italic;}
 .bp{width:100%;padding:15px;background:var(--red);color:#fff;border:none;border-radius:12px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .15s;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:.5rem;}
-.bp:hover{background:var(--red-bright);}
+.bp:hover{background:var(--rb);}
 .bp:active{transform:scale(.98);}
 .bp:disabled{opacity:.4;cursor:not-allowed;}
+/* LOADING */
 .ld{display:none;text-align:center;padding:4.5rem 1rem;}
 .ld.on{display:block;}
 .lw{width:80px;height:80px;margin:0 auto 1.5rem;}
-.lw svg{animation:sp 2.5s linear infinite;filter:drop-shadow(0 0 10px rgba(200,16,46,.55));}
-@keyframes sp{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-.lt{font-family:'Montserrat',sans-serif;font-size:15px;font-weight:600;color:var(--text-dim);margin-bottom:.4rem;}
-.lb{font-size:12px;color:var(--text-muted);font-style:italic;}
-.lds::after{content:'';animation:ld 1.4s infinite;}
-@keyframes ld{0%{content:'';}33%{content:'.';}66%{content:'..';}100%{content:'...'}}
+.lw svg{animation:rsp 2.5s linear infinite;filter:drop-shadow(0 0 10px rgba(200,16,46,.55));}
+@keyframes rsp{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.lt{font-family:'Montserrat',sans-serif;font-size:15px;font-weight:600;color:var(--td);margin-bottom:.4rem;}
+.lb{font-size:12px;color:var(--tm);font-style:italic;}
+.lds::after{content:'';animation:la 1.4s infinite;}
+@keyframes la{0%{content:'';}33%{content:'.';}66%{content:'..';}100%{content:'...'}}
+/* COMPASS */
 .ctop{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;}
-.cpill{font-size:12px;color:var(--text-dim);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 12px;display:inline-flex;align-items:center;gap:6px;}
+.cpill{font-size:12px;color:var(--td);background:var(--sf);border:1px solid var(--br);border-radius:8px;padding:6px 12px;display:inline-flex;align-items:center;gap:6px;}
 .cpill strong{color:#fff;}
 .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.75rem;}
-.cc{border-radius:14px;border:1px solid var(--border);background:var(--surface);padding:16px;position:relative;overflow:hidden;}
+.cc{border-radius:14px;border:1px solid var(--br);background:var(--sf);padding:16px;position:relative;overflow:hidden;}
 .cc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0;}
-.cc.n::before{background:var(--cn);}
-.cc.d::before{background:var(--cd);}
-.cc.s::before{background:var(--cs);}
-.cc.e::before{background:var(--ce);}
+.cc.cn::before{background:var(--cn);}.cc.cd::before{background:var(--cd);}.cc.cs::before{background:var(--cs);}.cc.ce::before{background:var(--ce);}
 .ctp{display:flex;align-items:center;gap:9px;margin-bottom:10px;}
 .ci{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
 .cl{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
-.n .cl{color:var(--cn);}.d .cl{color:var(--cd);}.s .cl{color:var(--cs);}.e .cl{color:var(--ce);}
-.csl{font-size:10px;color:var(--text-muted);margin-top:1px;}
+.cn .cl{color:var(--cn);}.cd .cl{color:var(--cd);}.cs .cl{color:var(--cs);}.ce .cl{color:var(--ce);}
+.csl{font-size:10px;color:var(--tm);margin-top:1px;}
 .cta{width:100%;background:transparent;border:none;color:#fff;font-family:'Lato',sans-serif;font-size:13px;line-height:1.7;resize:none;outline:none;min-height:88px;padding:0;}
-.cta::placeholder{color:var(--text-muted);font-style:italic;}
+.cta::placeholder{color:var(--tm);font-style:italic;}
 .cac{display:flex;gap:10px;}
-.bbk{flex:1;padding:13px;background:var(--surface);color:var(--text-dim);border:1px solid var(--border);border-radius:11px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
-.bbk:hover{background:var(--surface-mid);color:#fff;}
+.bbk{flex:1;padding:13px;background:var(--sf);color:var(--td);border:1px solid var(--br);border-radius:11px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.bbk:hover{background:var(--sm);color:#fff;}
 .bvl{flex:2;padding:13px;background:var(--red);color:#fff;border:none;border-radius:11px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
-.bvl:hover{background:var(--red-bright);}
-.si{background:var(--red-tint);border:1px solid rgba(200,16,46,.28);border-radius:12px;padding:14px 18px;margin-bottom:1.75rem;font-size:13px;color:var(--text-dim);line-height:1.7;}
+.bvl:hover{background:var(--rb);}
+/* STRATEGIES */
+.si{background:var(--rt);border:1px solid rgba(200,16,46,.28);border-radius:12px;padding:14px 18px;margin-bottom:1.75rem;font-size:13px;color:var(--td);line-height:1.7;}
 .si strong{color:rgba(255,150,150,1);}
 .ss{margin-bottom:2rem;}
-.sh{display:flex;align-items:center;gap:10px;margin-bottom:1rem;padding-bottom:.7rem;border-bottom:1px solid var(--border);}
-.sb{width:4px;height:20px;border-radius:3px;flex-shrink:0;}
-.st{font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;color:#fff;}
-.sd2{font-size:10px;color:var(--text-muted);margin-left:auto;letter-spacing:.4px;text-transform:uppercase;}
-.sc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;}
-.sl{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:7px;}
-.sb2{font-size:13px;color:var(--text-dim);line-height:1.7;}
+.sh{display:flex;align-items:center;gap:10px;margin-bottom:1rem;padding-bottom:.7rem;border-bottom:1px solid var(--br);}
+.sbar{width:4px;height:20px;border-radius:3px;flex-shrink:0;}
+.stl{font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;color:#fff;}
+.sdim{font-size:10px;color:var(--tm);margin-left:auto;letter-spacing:.4px;text-transform:uppercase;}
+.sc{background:var(--sf);border:1px solid var(--br);border-radius:12px;padding:16px;}
+.slbl{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:7px;}
+.sbdy{font-size:13px;color:var(--td);line-height:1.7;}
 .pb{margin-top:12px;padding:12px 16px;background:rgba(255,255,255,.04);border-radius:9px;border-left:3px solid var(--red);font-size:13px;font-style:italic;color:#fff;line-height:1.65;}
-.pl{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,130,130,1);margin-bottom:6px;font-style:normal;}
-.pn{border-left-color:var(--cn);}.pd{border-left-color:var(--cd);}.pss{border-left-color:var(--cs);}.pe{border-left-color:var(--ce);}
+.plbl{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,130,130,1);margin-bottom:6px;font-style:normal;}
+.pn{border-left-color:var(--cn);}.pd{border-left-color:var(--cd);}.ps2{border-left-color:var(--cs);}.pe{border-left-color:var(--ce);}
 .sac{display:flex;gap:10px;margin-top:2rem;flex-wrap:wrap;}
-.brst{flex:1;min-width:140px;padding:13px;background:var(--surface);color:var(--text-dim);border:1px solid var(--border);border-radius:11px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
-.brst:hover{background:var(--surface-mid);color:#fff;}
+.brst{flex:1;min-width:140px;padding:13px;background:var(--sf);color:var(--td);border:1px solid var(--br);border-radius:11px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.brst:hover{background:var(--sm);color:#fff;}
 .bpdf{flex:2;min-width:180px;padding:13px;background:var(--red);color:#fff;border:none;border-radius:11px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
-.bpdf:hover{background:var(--red-bright);}
+.bpdf:hover{background:var(--rb);}
 .bpdf:disabled{opacity:.5;cursor:not-allowed;}
 .er{background:rgba(200,16,46,.1);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:11px 16px;font-size:13px;color:rgba(255,130,130,1);margin-top:1rem;display:none;}
-.ftr{text-align:center;margin-top:3rem;font-size:11px;color:var(--text-muted);padding-top:1.25rem;border-top:1px solid var(--border);}
+.ftr{text-align:center;margin-top:3rem;font-size:11px;color:var(--tm);padding-top:1.25rem;border-top:1px solid var(--br);}
 .ftr span{color:rgba(255,130,130,1);}
 @media(max-width:540px){.cgrid{grid-template-columns:1fr;}.sac,.cac{flex-direction:column;}.pt{font-size:21px;}}
 </style>
@@ -115,11 +129,27 @@ body{font-family:'Lato',sans-serif;background:#111010;color:#fff;min-height:100v
     </div>
     <span class="bdg">&#10022; Compass Tool</span>
   </header>
-  <div class="stps">
-    <div class="sp active" id="s1" onclick="gS(1)"><div class="sd">1</div><span>Contexto</span></div>
-    <div class="sp" id="s2" onclick="gS(2)"><div class="sd">2</div><span>Compass</span></div>
-    <div class="sp" id="s3" onclick="gS(3)"><div class="sd">3</div><span>Estrategias</span></div>
+
+  <!-- TOKEN -->
+  <div class="tscr" id="tscr">
+    <div class="ttit">Ingresa el c&oacute;digo de acceso</div>
+    <div class="tsub">Esta herramienta est&aacute; disponible para participantes del workshop. Ingresa el c&oacute;digo que te comparti&oacute; el facilitador.</div>
+    <div class="tok-ok" id="tok-ok">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Acceso verificado &middot; listo para comenzar
+    </div>
+    <input class="tinp" type="text" id="tinp" placeholder="C&oacute;digo del workshop&hellip;" autocomplete="off" maxlength="20"/>
+    <button class="tbtn" onclick="saveToken()">Acceder &rarr;</button>
+    <div class="er" id="terr">C&oacute;digo incorrecto. Verifica con tu facilitador.</div>
   </div>
+
+  <div class="stps">
+    <div class="sp active" id="s1" onclick="gS(1)"><div class="spd">1</div><span>Contexto</span></div>
+    <div class="sp" id="s2" onclick="gS(2)"><div class="spd">2</div><span>Compass</span></div>
+    <div class="sp" id="s3" onclick="gS(3)"><div class="spd">3</div><span>Estrategias</span></div>
+  </div>
+
+  <!-- FASE 1 -->
   <div class="ph on" id="p1">
     <h1 class="pt">&iquest;A qui&eacute;n quieres <span class="ac">atender?</span></h1>
     <p class="ps">Cu&eacute;ntanos en qu&eacute; sector trabajas y c&oacute;mo es el cliente que quieres abordar. Con eso generamos su perfil Compass en cuatro dimensiones.</p>
@@ -145,25 +175,47 @@ body{font-family:'Lato',sans-serif;background:#111010;color:#fff;min-height:100v
       <textarea class="ft" id="cdesc" placeholder="S&eacute; tan espec&iacute;fico como puedas. Ej: Cliente de 35 a 50 a&ntilde;os que llega frustrado por fallas en el servicio anterior&hellip;"></textarea>
       <div class="fh">Cuanto m&aacute;s precisa sea la descripci&oacute;n, m&aacute;s &uacute;til ser&aacute; el Compass.</div>
     </div>
-    <div class="er" id="e1">Por favor completa el sector y la descripci&oacute;n antes de continuar.</div>
+    <div class="er" id="e1">Completa el sector y la descripci&oacute;n del cliente antes de continuar.</div>
     <button class="bp" id="bgen" onclick="genC()">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.8"/><path d="M12 4v4M12 16v4M4 12h4M16 12h4" stroke="white" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="12" r="2.5" fill="white"/></svg>
       Generar Compass Tool
     </button>
   </div>
-  <div class="ld" id="l1"><div class="lw"><svg viewBox="0 0 80 80" fill="none" width="80" height="80"><circle cx="40" cy="40" r="34" stroke="rgba(200,16,46,.18)" stroke-width="2.5"/><circle cx="40" cy="40" r="34" stroke="url(#g1)" stroke-width="2.5" stroke-dasharray="72 142" stroke-linecap="round"/><defs><linearGradient id="g1" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse"><stop stop-color="#E8213E"/><stop offset="1" stop-color="#FF7F7F" stop-opacity="0"/></linearGradient></defs><circle cx="40" cy="40" r="4" fill="#C8102E"/><path d="M40 40l2.5-9" stroke="#FFD0D0" stroke-width="2" stroke-linecap="round"/></svg></div><div class="lt">Analizando el perfil del cliente<span class="lds"></span></div><div class="lb">Construyendo las cuatro dimensiones del Compass</div></div>
+
+  <!-- LOADING 1 -->
+  <div class="ld" id="l1">
+    <div class="lw"><svg viewBox="0 0 80 80" fill="none" width="80" height="80"><circle cx="40" cy="40" r="34" stroke="rgba(200,16,46,.18)" stroke-width="2.5"/><circle cx="40" cy="40" r="34" stroke="url(#g1)" stroke-width="2.5" stroke-dasharray="72 142" stroke-linecap="round"/><defs><linearGradient id="g1" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse"><stop stop-color="#E8213E"/><stop offset="1" stop-color="#FF7F7F" stop-opacity="0"/></linearGradient></defs><circle cx="40" cy="40" r="4" fill="#C8102E"/><path d="M40 40l2.5-9" stroke="#FFD0D0" stroke-width="2" stroke-linecap="round"/></svg></div>
+    <div class="lt">Analizando el perfil del cliente<span class="lds"></span></div>
+    <div class="lb">Construyendo las cuatro dimensiones del Compass</div>
+  </div>
+
+  <!-- FASE 2 -->
   <div class="ph" id="p2">
-    <div class="ctop"><div><h1 class="pt">Tu <span class="ac">Compass</span></h1><p class="ps" style="margin-bottom:0;">Revisa y edita cada dimensi&oacute;n. Cuando est&eacute; listo, valida para ver las estrategias.</p></div><div class="cpill" id="cpill"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg><span id="ptxt"></span></div></div>
+    <div class="ctop">
+      <div><h1 class="pt">Tu <span class="ac">Compass</span></h1><p class="ps" style="margin-bottom:0;">Revisa y edita cada dimensi&oacute;n. Cuando est&eacute; listo, valida para ver las estrategias.</p></div>
+      <div class="cpill" id="cpill"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg><span id="ptxt"></span></div>
+    </div>
     <div class="cgrid">
-      <div class="cc n"><div class="ctp"><div class="ci">&#x1F9ED;</div><div><div class="cl">Necesidades</div><div class="csl">Situacionales &middot; racionales</div></div></div><textarea class="cta" id="cn" placeholder="&iquest;Qu&eacute; problema pr&aacute;ctico necesita resolver?"></textarea></div>
-      <div class="cc d"><div class="ctp"><div class="ci">&#x2728;</div><div><div class="cl">Deseos</div><div class="csl">Resultado esperado &middot; subjetivo</div></div></div><textarea class="cta" id="cd" placeholder="&iquest;Cu&aacute;l es el resultado ideal que espera?"></textarea></div>
-      <div class="cc s"><div class="ctp"><div class="ci">&#x1F50D;</div><div><div class="cl">Estereotipos</div><div class="csl">Preconcepciones &middot; sesgos</div></div></div><textarea class="cta" id="cs" placeholder="&iquest;Qu&eacute; ideas previas trae sobre el servicio?"></textarea></div>
-      <div class="cc e"><div class="ctp"><div class="ci">&#x1F4AB;</div><div><div class="cl">Emociones</div><div class="csl">Estado emocional &middot; momento</div></div></div><textarea class="cta" id="ce" placeholder="&iquest;C&oacute;mo se siente al llegar a la interacci&oacute;n?"></textarea></div>
+      <div class="cc cn"><div class="ctp"><div class="ci">&#x1F9ED;</div><div><div class="cl">Necesidades</div><div class="csl">Situacionales &middot; racionales</div></div></div><textarea class="cta" id="vcn" placeholder="Qu&eacute; problema pr&aacute;ctico necesita resolver?"></textarea></div>
+      <div class="cc cd"><div class="ctp"><div class="ci">&#x2728;</div><div><div class="cl">Deseos</div><div class="csl">Resultado esperado &middot; subjetivo</div></div></div><textarea class="cta" id="vcd" placeholder="Cu&aacute;l es el resultado ideal que espera?"></textarea></div>
+      <div class="cc cs"><div class="ctp"><div class="ci">&#x1F50D;</div><div><div class="cl">Estereotipos</div><div class="csl">Preconcepciones &middot; sesgos</div></div></div><textarea class="cta" id="vcs" placeholder="Qu&eacute; ideas previas trae sobre el servicio?"></textarea></div>
+      <div class="cc ce"><div class="ctp"><div class="ci">&#x1F4AB;</div><div><div class="cl">Emociones</div><div class="csl">Estado emocional &middot; momento</div></div></div><textarea class="cta" id="vce" placeholder="C&oacute;mo se siente al llegar a la interacci&oacute;n?"></textarea></div>
     </div>
     <div class="er" id="e2">Aseg&uacute;rate de que todas las dimensiones tengan contenido.</div>
-    <div class="cac"><button class="bbk" onclick="gS(1)">&larr; Editar contexto</button><button class="bvl" onclick="genS()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Validar y ver estrategias</button></div>
+    <div class="cac">
+      <button class="bbk" onclick="gS(1)">&larr; Editar contexto</button>
+      <button class="bvl" onclick="genS()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Validar y ver estrategias</button>
+    </div>
   </div>
-  <div class="ld" id="l2"><div class="lw"><svg viewBox="0 0 80 80" fill="none" width="80" height="80"><circle cx="40" cy="40" r="34" stroke="rgba(200,16,46,.15)" stroke-width="2.5"/><circle cx="40" cy="40" r="34" stroke="url(#g2)" stroke-width="2.5" stroke-dasharray="90 122" stroke-linecap="round"/><defs><linearGradient id="g2" x1="0" y1="80" x2="80" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7F7F"/><stop offset="1" stop-color="#C8102E" stop-opacity="0"/></linearGradient></defs><circle cx="40" cy="40" r="4" fill="#FF7F7F"/></svg></div><div class="lt">Generando estrategias de atenci&oacute;n<span class="lds"></span></div><div class="lb">Preparando t&aacute;cticas y frases para cada dimensi&oacute;n</div></div>
+
+  <!-- LOADING 2 -->
+  <div class="ld" id="l2">
+    <div class="lw"><svg viewBox="0 0 80 80" fill="none" width="80" height="80"><circle cx="40" cy="40" r="34" stroke="rgba(200,16,46,.15)" stroke-width="2.5"/><circle cx="40" cy="40" r="34" stroke="url(#g2)" stroke-width="2.5" stroke-dasharray="90 122" stroke-linecap="round"/><defs><linearGradient id="g2" x1="0" y1="80" x2="80" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7F7F"/><stop offset="1" stop-color="#C8102E" stop-opacity="0"/></linearGradient></defs><circle cx="40" cy="40" r="4" fill="#FF7F7F"/></svg></div>
+    <div class="lt">Generando estrategias de atenci&oacute;n<span class="lds"></span></div>
+    <div class="lb">Preparando t&aacute;cticas y frases para cada dimensi&oacute;n</div>
+  </div>
+
+  <!-- FASE 3 -->
   <div class="ph" id="p3">
     <h1 class="pt">Estrategias de <span class="ac">atenci&oacute;n</span></h1>
     <p class="ps">Para cada dimensi&oacute;n encontrar&aacute;s qu&eacute; hacer y una frase que puedes usar directamente con tu cliente.</p>
@@ -178,87 +230,173 @@ body{font-family:'Lato',sans-serif;background:#111010;color:#fff;min-height:100v
       </button>
     </div>
   </div>
+
   <footer class="ftr">Compass Tool &middot; Programa <span>Magia</span> &middot; Workshop de Servicio al Cliente &middot; Kingala</footer>
 </div>
+
 <script>
-var S={sector:"",desc:"",compass:{n:"",d:"",s:"",e:""},strategies:null};
-document.getElementById("sec").addEventListener("change",function(){document.getElementById("otro").style.display=this.value==="Otro"?"block":"none";});
-function gS(n){if(n===2&&!S.compass.n)return;if(n===3&&!S.strategies)return;sP(n);}
-function sSt(n){[1,2,3].forEach(function(i){document.getElementById("s"+i).className="sp"+(i===n?" active":i<n?" done":"");});}
-function sP(n){["p1","p2","p3","l1","l2"].forEach(function(id){var e=document.getElementById(id);e.style.display="none";e.classList.remove("on");});document.getElementById("p"+n).style.display="block";document.getElementById("p"+n).classList.add("on");sSt(n);window.scrollTo({top:0,behavior:"smooth"});}
-function sL(id){["p1","p2","p3","l1","l2"].forEach(function(i){var e=document.getElementById(i);e.style.display="none";e.classList.remove("on");});document.getElementById(id).style.display="block";document.getElementById(id).classList.add("on");window.scrollTo({top:0,behavior:"smooth"});}
-async function genC(){
-  var sel=document.getElementById("sec");var sector=sel.value;
-  if(sector==="Otro")sector=document.getElementById("sotr").value.trim();
-  var desc=document.getElementById("cdesc").value.trim();
-  document.getElementById("e1").style.display="none";
-  if(!sector||!desc){document.getElementById("e1").style.display="block";return;}
-  S.sector=sector;S.desc=desc;
-  document.getElementById("bgen").disabled=true;sL("l1");
-  var prompt="Eres un experto en atencion al cliente. Sector: "+JSON.stringify(sector)+". Cliente: "+JSON.stringify(desc)+". Genera perfil Compass Tool. Solo JSON puro sin backticks: {"n":"2-3 oraciones necesidades situacionales racionales","d":"2-3 oraciones resultado ideal esperado","s":"2-3 oraciones preconcepciones expectativas previas","e":"2-3 oraciones estado emocional en la interaccion"} Espanol latinoamericano.";
-  try{
-    var res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
-    var data=await res.json();
-    var raw=data.content.map(function(b){return b.text||"";}).join("").replace(/```json|```/g,"").trim();
-    var c=JSON.parse(raw);
-    S.compass=c;
-    document.getElementById("cn").value=c.n;document.getElementById("cd").value=c.d;
-    document.getElementById("cs").value=c.s;document.getElementById("ce").value=c.e;
-    document.getElementById("ptxt").innerHTML="<strong>"+sector+"</strong> &middot; "+(desc.length>50?desc.slice(0,50)+"&hellip;":desc);
-    arR();sP(2);
-  }catch(ex){sP(1);document.getElementById("e1").textContent="Error al conectar con la IA. Intenta de nuevo.";document.getElementById("e1").style.display="block";}
-  document.getElementById("bgen").disabled=false;
+// ── CONFIGURA AQUI LA URL DE TU APPS SCRIPT ─────────────────
+var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyn5KTGJtH-vDHKxoZHtGI-MeAzRmN0jKGLf_d1zd-NG7oqrtG9HHFqCXVILfvH9Ozu/exec";
+// Ejemplo: "https://script.google.com/macros/s/AKfy.../exec"
+// ─────────────────────────────────────────────────────────────
+
+var S = {sector:"", desc:"", compass:{n:"",d:"",s:"",e:""}, strategies:null};
+var userToken = "";
+
+// ── TOKEN ────────────────────────────────────────────────────
+function saveToken() {
+  var v = document.getElementById("tinp").value.trim().toUpperCase();
+  document.getElementById("terr").style.display = "none";
+  if (!v) { document.getElementById("terr").style.display = "block"; return; }
+  userToken = v;
+  var scr = document.getElementById("tscr");
+  scr.style.background = "rgba(80,200,120,0.06)";
+  scr.style.borderColor = "rgba(80,200,120,0.25)";
+  document.getElementById("tinp").style.display = "none";
+  scr.querySelector(".tbtn").style.display = "none";
+  scr.querySelector(".ttit").textContent = "Acceso activo";
+  scr.querySelector(".tsub").textContent = "Tu código de acceso está activo para esta sesión.";
+  document.getElementById("tok-ok").classList.add("on");
 }
-function arR(){["cn","cd","cs","ce"].forEach(function(id){var el=document.getElementById(id);el.style.height="auto";el.style.height=el.scrollHeight+"px";el.addEventListener("input",function(){this.style.height="auto";this.style.height=this.scrollHeight+"px";});});}
-async function genS(){
-  var n=document.getElementById("cn").value.trim(),d=document.getElementById("cd").value.trim();
-  var s=document.getElementById("cs").value.trim(),e=document.getElementById("ce").value.trim();
-  document.getElementById("e2").style.display="none";
-  if(!n||!d||!s||!e){document.getElementById("e2").style.display="block";return;}
-  S.compass={n:n,d:d,s:s,e:e};sL("l2");
-  var prompt="Eres coach de atencion al cliente Disney Quality Service. Sector: "+JSON.stringify(S.sector)+". NECESIDADES: "+JSON.stringify(n)+". DESEOS: "+JSON.stringify(d)+". ESTEREOTIPOS: "+JSON.stringify(s)+". EMOCIONES: "+JSON.stringify(e)+". Genera estrategias. Solo JSON puro sin backticks: {"sum":"1-2 oraciones enfoque clave","n":{"str":"3 oraciones","ph":"Frase max 18 palabras conversacional natural"},"d":{"str":"3 oraciones","ph":"Frase max 18 palabras"},"s":{"str":"3 oraciones","ph":"Frase max 18 palabras"},"e":{"str":"3 oraciones","ph":"Frase max 18 palabras"}} Frases como persona real hablando con otra. Sin protocolo corporativo. Espanol latinoamericano.";
-  try{
-    var res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1500,messages:[{role:"user",content:prompt}]})});
-    var data=await res.json();
-    var raw=data.content.map(function(b){return b.text||"";}).join("").replace(/```json|```/g,"").trim();
-    var st=JSON.parse(raw);
-    S.strategies=st;rndrS(st);sP(3);
-  }catch(ex){sP(2);document.getElementById("e2").textContent="Error al generar estrategias. Intenta de nuevo.";document.getElementById("e2").style.display="block";}
+
+// Permitir Enter en el input de token
+document.getElementById("tinp").addEventListener("keydown", function(e){
+  if (e.key === "Enter") saveToken();
+});
+
+// ── NAVIGATION ───────────────────────────────────────────────
+function gS(n) { if(n===2&&!S.compass.n)return; if(n===3&&!S.strategies)return; sP(n); }
+function sSt(n) { [1,2,3].forEach(function(i){document.getElementById("s"+i).className="sp"+(i===n?" active":i<n?" done":"");}); }
+function sP(n) {
+  ["p1","p2","p3","l1","l2"].forEach(function(id){var e=document.getElementById(id);e.style.display="none";e.classList.remove("on");});
+  document.getElementById("p"+n).style.display="block"; document.getElementById("p"+n).classList.add("on");
+  sSt(n); window.scrollTo({top:0,behavior:"smooth"});
 }
-var DIM=[{k:"n",lbl:"Necesidades",sub:"Situacional · Racional",col:"var(--cn)",pc:"pn",ic:"&#x1F9ED;"},
-         {k:"d",lbl:"Deseos",sub:"Resultado · Subjetivo",col:"var(--cd)",pc:"pd",ic:"&#x2728;"},
-         {k:"s",lbl:"Estereotipos",sub:"Preconcepción · Sesgo",col:"var(--cs)",pc:"pss",ic:"&#x1F50D;"},
-         {k:"e",lbl:"Emociones",sub:"Estado Emocional",col:"var(--ce)",pc:"pe",ic:"&#x1F4AB;"}];
-function rndrS(st){
-  document.getElementById("ssum").innerHTML="<strong>Enfoque general:</strong> "+st.sum;
-  var c=document.getElementById("scont");c.innerHTML="";
+function sL(id) {
+  ["p1","p2","p3","l1","l2"].forEach(function(i){var e=document.getElementById(i);e.style.display="none";e.classList.remove("on");});
+  document.getElementById(id).style.display="block"; document.getElementById(id).classList.add("on");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.getElementById("sec").addEventListener("change", function(){
+  document.getElementById("otro").style.display = this.value==="Otro" ? "block" : "none";
+});
+
+// ── CALL APPS SCRIPT ─────────────────────────────────────────
+async function callAS(payload) {
+  payload.token = userToken;
+  var res = await fetch(APPS_SCRIPT_URL, {
+    method: "POST",
+    headers: {"Content-Type":"text/plain"},
+    body: JSON.stringify(payload)
+  });
+  var data = await res.json();
+  if (!data.ok) {
+    var msgs = {
+      "TOKEN_INVALID":    "Código de acceso incorrecto. Verifica con tu facilitador.",
+      "DAILY_LIMIT_REACHED": "Se alcanzó el límite de uso por hoy. Contacta a Kingala.",
+      "NO_API_KEY":       "Error de configuración del servidor.",
+      "API_ERROR_401":    "Error de autenticación con la IA.",
+      "API_ERROR_402":    "Sin créditos disponibles en la cuenta de IA."
+    };
+    throw new Error(msgs[data.error] || ("Error: " + data.error));
+  }
+  return data.result;
+}
+
+// ── GENERATE COMPASS ─────────────────────────────────────────
+async function genC() {
+  if (!userToken) { alert("Ingresa tu código de acceso primero."); return; }
+  var sel = document.getElementById("sec");
+  var sector = sel.value;
+  if (sector==="Otro") sector = document.getElementById("sotr").value.trim();
+  var desc = document.getElementById("cdesc").value.trim();
+  document.getElementById("e1").style.display = "none";
+  if (!sector || !desc) { document.getElementById("e1").style.display="block"; return; }
+  S.sector = sector; S.desc = desc;
+  document.getElementById("bgen").disabled = true; sL("l1");
+  try {
+    var raw = await callAS({action:"compass", sector:sector, clientDesc:desc});
+    var c = JSON.parse(raw);
+    S.compass = c;
+    document.getElementById("vcn").value = c.n;
+    document.getElementById("vcd").value = c.d;
+    document.getElementById("vcs").value = c.s;
+    document.getElementById("vce").value = c.e;
+    document.getElementById("ptxt").innerHTML = "<strong>"+sector+"</strong> &middot; "+(desc.length>50?desc.slice(0,50)+"&hellip;":desc);
+    arR(); sP(2);
+  } catch(ex) {
+    sP(1);
+    document.getElementById("e1").textContent = ex.message;
+    document.getElementById("e1").style.display = "block";
+  }
+  document.getElementById("bgen").disabled = false;
+}
+
+function arR() {
+  ["vcn","vcd","vcs","vce"].forEach(function(id){
+    var el=document.getElementById(id);
+    el.style.height="auto"; el.style.height=el.scrollHeight+"px";
+    el.addEventListener("input",function(){this.style.height="auto";this.style.height=this.scrollHeight+"px";});
+  });
+}
+
+// ── GENERATE STRATEGIES ──────────────────────────────────────
+async function genS() {
+  var n=document.getElementById("vcn").value.trim(), d=document.getElementById("vcd").value.trim();
+  var s=document.getElementById("vcs").value.trim(), e=document.getElementById("vce").value.trim();
+  document.getElementById("e2").style.display = "none";
+  if (!n||!d||!s||!e) { document.getElementById("e2").style.display="block"; return; }
+  S.compass = {n:n,d:d,s:s,e:e}; sL("l2");
+  try {
+    var raw = await callAS({action:"strategies", sector:S.sector, n:n, d:d, s:s, e:e});
+    var st = JSON.parse(raw);
+    S.strategies = st; rndrS(st); sP(3);
+  } catch(ex) {
+    sP(2);
+    document.getElementById("e2").textContent = ex.message;
+    document.getElementById("e2").style.display = "block";
+  }
+}
+
+// ── RENDER STRATEGIES ────────────────────────────────────────
+var DIM = [
+  {k:"n",lbl:"Necesidades",sub:"Situacional · Racional",col:"var(--cn)",pc:"pn",ic:"&#x1F9ED;"},
+  {k:"d",lbl:"Deseos",sub:"Resultado · Subjetivo",col:"var(--cd)",pc:"pd",ic:"&#x2728;"},
+  {k:"s",lbl:"Estereotipos",sub:"Preconcepción · Sesgo",col:"var(--cs)",pc:"ps2",ic:"&#x1F50D;"},
+  {k:"e",lbl:"Emociones",sub:"Estado Emocional",col:"var(--ce)",pc:"pe",ic:"&#x1F4AB;"}
+];
+function rndrS(st) {
+  document.getElementById("ssum").innerHTML = "<strong>Enfoque general:</strong> " + st.sum;
+  var c=document.getElementById("scont"); c.innerHTML="";
   DIM.forEach(function(dm){
-    var sd=st[dm.k];var sec=document.createElement("div");sec.className="ss";
-    sec.innerHTML="<div class='sh'><div class='sb' style='background:"+dm.col+"'></div><div class='st'>"+dm.ic+" "+dm.lbl+"</div><div class='sd2'>"+dm.sub+"</div></div><div class='sc'><div class='sl' style='color:"+dm.col+"'>Qué hacer</div><div class='sb2'>"+sd.str+"</div><div class='pb "+dm.pc+"'><div class='pl'>Frase sugerida</div>"+sd.ph+"</div></div>";
+    var sd=st[dm.k]; var sec=document.createElement("div"); sec.className="ss";
+    sec.innerHTML="<div class='sh'><div class='sbar' style='background:"+dm.col+"'></div><div class='stl'>"+dm.ic+" "+dm.lbl+"</div><div class='sdim'>"+dm.sub+"</div></div><div class='sc'><div class='slbl' style='color:"+dm.col+"'>Qué hacer</div><div class='sbdy'>"+sd.str+"</div><div class='pb "+dm.pc+"'><div class='plbl'>Frase sugerida</div>"+sd.ph+"</div></div>";
     c.appendChild(sec);
   });
 }
-async function xPDF(){
-  var btn=document.getElementById("bpdf");btn.disabled=true;btn.textContent="Generando PDF…";
-  try{
+
+// ── PDF ──────────────────────────────────────────────────────
+async function xPDF() {
+  var btn=document.getElementById("bpdf"); btn.disabled=true; btn.textContent="Generando PDF…";
+  try {
     var jsPDF=window.jspdf.jsPDF;
     var doc=new jsPDF({orientation:"portrait",unit:"mm",format:"a4"});
-    var W=210,ml=18,mr=18,cw=W-ml-mr;var y=0;
-    doc.setFillColor(200,16,46);doc.rect(0,0,W,55,"F");
-    doc.setTextColor(255,255,255);doc.setFont("helvetica","bold");doc.setFontSize(30);doc.text("kingala",ml,30);
-    doc.setFontSize(11);doc.setFont("helvetica","normal");doc.text("Compass Tool · Programa Magia",ml,40);
-    doc.setFontSize(8.5);doc.setTextColor(255,200,200);doc.text("Workshop de Servicio al Cliente · Kingala AI Human Innovation",ml,47);
+    var W=210,ml=18,mr=18,cw=W-ml-mr; var y=0;
+    doc.setFillColor(200,16,46); doc.rect(0,0,W,55,"F");
+    doc.setTextColor(255,255,255); doc.setFont("helvetica","bold"); doc.setFontSize(30); doc.text("kingala",ml,30);
+    doc.setFontSize(11); doc.setFont("helvetica","normal"); doc.text("Compass Tool · Programa Magia",ml,40);
+    doc.setFontSize(8.5); doc.setTextColor(255,200,200); doc.text("Workshop de Servicio al Cliente · Kingala AI Human Innovation",ml,47);
     var fecha=new Date().toLocaleDateString("es-MX",{year:"numeric",month:"long",day:"numeric"});
-    doc.setFontSize(8);doc.setTextColor(255,220,220);doc.text(fecha,W-mr,50,{align:"right"});
+    doc.setFontSize(8); doc.setTextColor(255,220,220); doc.text(fecha,W-mr,50,{align:"right"});
     y=65;
-    var ctxL=doc.splitTextToSize(S.desc,cw-10);var ctxH=ctxL.length*4.5+22;
-    doc.setFillColor(248,248,248);doc.setDrawColor(220,220,220);doc.roundedRect(ml,y,cw,ctxH,3,3,"FD");
-    doc.setFontSize(7.5);doc.setFont("helvetica","bold");doc.setTextColor(160,50,50);doc.text("SECTOR",ml+5,y+7);
-    doc.setFont("helvetica","normal");doc.setTextColor(30,30,30);doc.setFontSize(10);doc.text(S.sector,ml+5,y+13);
-    doc.setFontSize(7.5);doc.setFont("helvetica","bold");doc.setTextColor(160,50,50);doc.text("CLIENTE DESCRITO",ml+5,y+19);
-    doc.setFont("helvetica","normal");doc.setTextColor(60,60,60);doc.setFontSize(9);doc.text(ctxL,ml+5,y+25);
+    var ctxL=doc.splitTextToSize(S.desc,cw-10); var ctxH=ctxL.length*4.5+22;
+    doc.setFillColor(248,248,248); doc.setDrawColor(220,220,220); doc.roundedRect(ml,y,cw,ctxH,3,3,"FD");
+    doc.setFontSize(7.5); doc.setFont("helvetica","bold"); doc.setTextColor(160,50,50); doc.text("SECTOR",ml+5,y+7);
+    doc.setFont("helvetica","normal"); doc.setTextColor(30,30,30); doc.setFontSize(10); doc.text(S.sector,ml+5,y+13);
+    doc.setFontSize(7.5); doc.setFont("helvetica","bold"); doc.setTextColor(160,50,50); doc.text("CLIENTE DESCRITO",ml+5,y+19);
+    doc.setFont("helvetica","normal"); doc.setTextColor(60,60,60); doc.setFontSize(9); doc.text(ctxL,ml+5,y+25);
     y+=ctxH+8;
-    doc.setFillColor(200,16,46);doc.rect(ml,y,cw,8,"F");doc.setTextColor(255,255,255);doc.setFont("helvetica","bold");doc.setFontSize(10);doc.text("PERFIL COMPASS",ml+4,y+5.5);y+=12;
+    doc.setFillColor(200,16,46); doc.rect(ml,y,cw,8,"F"); doc.setTextColor(255,255,255); doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.text("PERFIL COMPASS",ml+4,y+5.5); y+=12;
     var QQ=[{k:"n",lbl:"NECESIDADES",sub:"Situacionales · Racionales",cr:[255,127,127],bg:[255,242,242]},{k:"d",lbl:"DESEOS",sub:"Resultado Esperado · Subjetivo",cr:[255,179,71],bg:[255,251,238]},{k:"s",lbl:"ESTEREOTIPOS",sub:"Preconcepciones · Sesgos",cr:[195,170,40],bg:[254,252,218]},{k:"e",lbl:"EMOCIONES",sub:"Estado Emocional · Momento",cr:[80,185,165],bg:[228,249,244]}];
     QQ.forEach(function(q){var lines=doc.splitTextToSize(S.compass[q.k]||"",cw-12);var bh=lines.length*4.5+18;if(y+bh>282){doc.addPage();y=18;}doc.setFillColor.apply(doc,q.bg);doc.setDrawColor.apply(doc,q.cr);doc.roundedRect(ml,y,cw,bh,3,3,"FD");doc.setFillColor.apply(doc,q.cr);doc.rect(ml,y,3,bh,"F");doc.setTextColor.apply(doc,q.cr);doc.setFont("helvetica","bold");doc.setFontSize(8.5);doc.text(q.lbl,ml+6,y+6.5);doc.setTextColor(120,120,120);doc.setFont("helvetica","normal");doc.setFontSize(7.5);doc.text(q.sub,ml+6,y+11.5);doc.setTextColor(40,40,40);doc.setFontSize(9);doc.text(lines,ml+6,y+16);y+=bh+5;});
     if(S.strategies){
@@ -267,13 +405,19 @@ async function xPDF(){
       var SD=[{k:"n",lbl:"NECESIDADES",cr:[255,127,127],bg:[255,245,245]},{k:"d",lbl:"DESEOS",cr:[255,160,60],bg:[255,251,235]},{k:"s",lbl:"ESTEREOTIPOS",cr:[180,155,35],bg:[252,249,210]},{k:"e",lbl:"EMOCIONES",cr:[60,175,155],bg:[228,249,244]}];
       SD.forEach(function(dm){var st=S.strategies[dm.k];if(!st)return;var sl2=doc.splitTextToSize(st.str||"",cw-12);var pl=doc.splitTextToSize('"'+(st.ph||"")+'"',cw-18);var bh=sl2.length*4.5+pl.length*4.5+34;if(y+bh>276){doc.addPage();y=18;}doc.setFillColor.apply(doc,dm.cr);doc.rect(ml,y,cw,9,"F");doc.setTextColor(255,255,255);doc.setFont("helvetica","bold");doc.setFontSize(9);doc.text(dm.lbl,ml+5,y+6.2);y+=11;var sh2=sl2.length*4.5+13;doc.setFillColor(250,250,250);doc.setDrawColor(220,220,220);doc.rect(ml,y,cw,sh2,"FD");doc.setTextColor(130,130,130);doc.setFont("helvetica","bold");doc.setFontSize(7.5);doc.text("QUÉ HACER",ml+5,y+6.5);doc.setFont("helvetica","normal");doc.setTextColor(40,40,40);doc.setFontSize(9);doc.text(sl2,ml+5,y+12);y+=sh2+3;var ph2=pl.length*4.5+13;doc.setFillColor.apply(doc,dm.bg);doc.setDrawColor.apply(doc,dm.cr);doc.roundedRect(ml,y,cw,ph2,2,2,"FD");doc.setFillColor.apply(doc,dm.cr);doc.rect(ml,y,3,ph2,"F");doc.setTextColor.apply(doc,dm.cr);doc.setFont("helvetica","bold");doc.setFontSize(7.5);doc.text("FRASE SUGERIDA",ml+6,y+6.5);doc.setFont("helvetica","italic");doc.setTextColor(40,40,40);doc.setFontSize(9);doc.text(pl,ml+6,y+12);y+=ph2+8;});
     }
-    var pages=doc.getNumberOfPages();for(var i=1;i<=pages;i++){doc.setPage(i);doc.setFillColor(240,240,240);doc.rect(0,286,W,11,"F");doc.setFillColor(200,16,46);doc.rect(0,286,4,11,"F");doc.setTextColor(120,120,120);doc.setFont("helvetica","normal");doc.setFontSize(7.5);doc.text("Compass Tool · Programa Magia · Kingala AI Human Innovation",ml,292);doc.text("Página "+i+" de "+pages,W-mr,292,{align:"right"});}
+    var pages=doc.getNumberOfPages();for(var i=1;i<=pages;i++){doc.setPage(i);doc.setFillColor(240,240,240);doc.rect(0,286,W,11,"F");doc.setFillColor(200,16,46);doc.rect(0,286,4,11,"F");doc.setTextColor(120,120,120);doc.setFont("helvetica","normal");doc.setFontSize(7.5);doc.text("Compass Tool · Programa Magia · Kingala",ml,292);doc.text("Página "+i+" de "+pages,W-mr,292,{align:"right"});}
     doc.save("compass-"+S.sector.replace(/[^a-z0-9]/gi,"-").toLowerCase()+".pdf");
-  }catch(ex){console.error(ex);alert("Error al generar el PDF.");}
+  } catch(ex){console.error(ex);alert("Error al generar el PDF: "+ex.message);}
   btn.disabled=false;
   btn.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 20h14" stroke="white" stroke-width="2" stroke-linecap="round"/></svg> Descargar reporte PDF';
 }
-function rst(){S={sector:"",desc:"",compass:{n:"",d:"",s:"",e:""},strategies:null};document.getElementById("sec").value="";document.getElementById("cdesc").value="";document.getElementById("otro").style.display="none";document.getElementById("scont").innerHTML="";sP(1);}
+
+function rst() {
+  S={sector:"",desc:"",compass:{n:"",d:"",s:"",e:""},strategies:null};
+  document.getElementById("sec").value=""; document.getElementById("cdesc").value="";
+  document.getElementById("otro").style.display="none"; document.getElementById("scont").innerHTML="";
+  sP(1);
+}
 </script>
 </body>
 </html>
